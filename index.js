@@ -26,6 +26,7 @@ const peerServer = ExpressPeerServer(server, {
     debug: true,
     proxied: true,
 });
+
 app.use("/peerjs", peerServer);
 
 peerServer.on("connection", (client) => {
