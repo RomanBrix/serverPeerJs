@@ -5,7 +5,7 @@ const app = express();
 // const httpServer = require("http").createServer(app);
 const cors = require("cors");
 
-const PORT = 9000;
+const PORT = process.env.PORT || 9000;
 
 const server = app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
