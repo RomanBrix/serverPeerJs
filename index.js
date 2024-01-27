@@ -17,7 +17,7 @@ const peerServer = ExpressPeerServer(server, {
 
 // const path = require("path");
 // const { v4: uuidV4 } = require("uuid");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 9000;
 // const room = {}
 
 app.use("/", peerServer);
