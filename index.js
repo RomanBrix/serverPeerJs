@@ -1,44 +1,51 @@
 const express = require("express");
-const { ExpressPeerServer } = require("peer");
 const app = express();
 
-// const httpServer = require("http").createServer(app);
-const cors = require("cors");
+const { ExpressPeerServer } = require("peer");
 
-const PORT = process.env.PORT || 9000;
+const http = require("http");
 
-const server = app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-    console.log("Press Ctrl+C to quit.");
-});
+const server = http.createServer(app);
 
-app.use(
-    cors({
-        origin: "*",
-    })
-);
-
-app.use(express.json());
-// PEER SERVER
-app.enable("trust proxy");
 const peerServer = ExpressPeerServer(server, {
-    path: "/",
     debug: true,
-    proxied: true,
+    path: "/peerjs",
 });
 
-app.use("/peerjs", peerServer);
+// const { Server } = require("socket.io");
+// const io = new Server(server);
 
-peerServer.on("connection", (client) => {
-    console.log("Peer Conected");
-    // console.log(client);
-});
+// const path = require("path");
+// const { v4: uuidV4 } = require("uuid");
+const PORT = process.env.PORT || 3000;
+// const room = {}
 
-//API ROUTES
-app.get("/", (req, res) => {
-    res.status(200).send("peerjs");
-});
+app.use("/", peerServer);
+// app.use(express.static("public"));
 
-// httpServer.listen(PORT, () => {
-//     console.log("Backend server is running! port:  " + PORT);
+// app.get("/", (req, res) => {
+//    const roomId = uuidV4();
+//     res.redirect("/room/" + roomId);
 // });
+
+// app.get("/room/:roomid", (req, res) => {
+//   if (room[req.params.roomid]?.length >= 2) {
+//     res.send("<h1>Maaf Room Sudah Penuh</h1>");
+//   } else {
+//     res.sendFile(path.resolve("./views/index.html"));
+//   }
+// });
+
+// io.on("connection", socket => {
+//   socket.on("new-user", ({ roomId, peerId }) => {
+//     socket.join(roomId);
+//     if (room[roomId]) {
+//       socket.emit("another-user", room[roomId][0]);
+//       room[roomId].push(peerId);
+//     } else {
+//       room[roomId] = [ peerId ];
+//     }
+//   });
+// });
+
+server.listen(PORT, () => console.log("Server is Running..."));
